@@ -10,19 +10,19 @@ def authors(book)
   book['volumeInfo']['authors'].join(" and ")
 end
 
-def list_price(book)
-  if book['saleInfo'].has_key?('listPrice')
+def prices(book, type=nil)
+  if type == 'list'
+    if book['saleInfo'].has_key?('listPrice')
     book['saleInfo']['listPrice']['amount']
-  else
-    'Not For Sale'
-  end
-end
-
-def retail_price(book)
-  if book['saleInfo'].has_key?('retailPrice')
-    book['saleInfo']['retailPrice']['amount']
-  else
-    'Not For Sale'
+    else
+      'Not For Sale'
+    end
+  elsif type == 'retail'
+    if book['saleInfo'].has_key?('retailPrice')
+      book['saleInfo']['retailPrice']['amount']
+    else
+      'Not For Sale'
+    end
   end
 end
 
@@ -35,8 +35,8 @@ books = data["items"]
 
 books.each do |book|
   puts "#{title(book)} by #{authors(book)}"
-  puts "List Price: #{list_price(book)}"
-  puts "Retail Price: #{retail_price(book)}"
+  puts "List Price: #{prices(book, 'list')}"
+  puts "Retail Price: #{prices(book, 'retail')}"
 end
 
 # 1. Make a web request and get back the JSON string
